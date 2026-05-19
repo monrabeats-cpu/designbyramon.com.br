@@ -182,7 +182,7 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
 .modal-submit:hover{background:var(--blue);color:var(--off)}
 
 /* HERO CURTAIN */
-#hero-curtain{position:fixed;inset:0;z-index:9000;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;will-change:transform}
+#hero-curtain{position:fixed;inset:0;z-index:9000;background:linear-gradient(to bottom,rgba(5,5,5,1) 0%,rgba(5,5,5,1) 30%,rgba(5,5,5,0.88) 52%,rgba(5,5,5,0.5) 72%,rgba(5,5,5,0.1) 90%,transparent 100%);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:18vh;pointer-events:none;will-change:transform}
 #hc-logo{opacity:0;transform:scale(0.35);will-change:transform,opacity}
 #hc-cue{position:absolute;bottom:3rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.75rem;opacity:0;transition:opacity 0.6s var(--ease)}
 #hc-cue-label{font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted)}
@@ -193,8 +193,8 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
   nav,section,footer,#stats .stat{padding-left:2rem;padding-right:2rem}
   #hero{display:flex!important;flex-direction:column!important;min-height:100vh}
   #hero>div:nth-child(2){display:none}
-  #hero>div:nth-child(3){order:2;display:flex!important;flex-direction:column;justify-content:flex-start;padding:3rem 2rem 4rem;flex-shrink:0}
-  #hero>div:nth-child(4){order:1;display:block!important;width:100%;height:60vh;flex-shrink:0}
+  #hero>div:nth-child(3){order:1;display:flex!important;flex-direction:column;justify-content:flex-start;padding:5.5rem 2rem 2rem;flex-shrink:0}
+  #hero>div:nth-child(4){order:2;display:block!important;width:100%;height:65vh;flex-shrink:0}
   .method-wrap,.calc-wrap{grid-template-columns:1fr;gap:4rem}
   .method-visual,.calc-result-box{position:relative;top:0}
   .portfolio-grid{grid-template-columns:repeat(2,1fr)}
