@@ -718,11 +718,13 @@ window.addEventListener('scroll',()=>{
   const snap=vh*0.4;
   const veil=document.getElementById('hero-veil');
   if(sy>=snap){
-    hcurtain.style.display='none';
+    hcurtain.style.opacity='0';
+    hcurtain.style.pointerEvents='none';
     if(veil)veil.style.opacity='0';
     triggerHeroText();
   }else{
-    hcurtain.style.display='flex';
+    hcurtain.style.opacity='1';
+    hcurtain.style.pointerEvents='none';
     hcurtain.style.transform=`translateY(${-sy*2}px)`;
     const prog=sy/snap;
     if(veil)veil.style.opacity=`${Math.max(0,1-prog*1.4)}`;
