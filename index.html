@@ -190,6 +190,12 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
 #hc-cue-label{font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted)}
 #hc-line{width:1px;height:56px;background:linear-gradient(var(--off),transparent);animation:scrollLine 2s ease-in-out infinite}
 
+/* DESKTOP HERO FIX */
+@media(min-width:1025px){
+  #hero{height:100vh!important;min-height:unset}
+  #hero>div:nth-child(3){display:flex;flex-direction:column;justify-content:flex-end;height:100%}
+  #hero>div:nth-child(4){height:100%;overflow:hidden}
+}
 /* RESPONSIVE */
 @media(max-width:1024px){
   #intro-spacer{height:50vh}
