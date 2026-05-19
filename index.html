@@ -183,7 +183,7 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
 
 /* INTRO SPACER + CURTAIN */
 #intro-spacer{height:50vh}
-#hero-curtain{position:fixed;inset:0;z-index:9000;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;will-change:transform}
+#hero-curtain{position:fixed;top:0;left:0;right:0;bottom:auto;height:80vh;z-index:9000;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;will-change:transform;-webkit-mask-image:linear-gradient(to bottom,black 65%,transparent 100%);mask-image:linear-gradient(to bottom,black 65%,transparent 100%)}
 #hc-logo{opacity:0;transform:scale(0.35);will-change:transform,opacity}
 #hc-cue{position:absolute;bottom:3rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.75rem;opacity:0;transition:opacity 0.6s var(--ease)}
 #hc-cue-label{font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted)}
@@ -698,7 +698,7 @@ window.addEventListener('scroll',()=>{
   document.getElementById('nav').classList.toggle('scrolled',sy>60);
   initReveal();
   // Curtain some em 50vh de scroll (1 swipe) movendo 2x mais rápido
-  const snap=vh*0.5;
+  const snap=vh*0.4;
   if(sy>=snap){
     hcurtain.style.display='none';
     triggerHeroText();
