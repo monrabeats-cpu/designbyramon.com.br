@@ -31,12 +31,11 @@ body{background:var(--black);color:var(--off);font-family:var(--font-body);font-
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:0.6}
 
 /* LOADER */
-#loader{position:fixed;inset:0;background:var(--black);z-index:9998;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;transition:opacity 0.6s var(--ease)}
+#loader{position:fixed;inset:0;background:var(--black);z-index:9998;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3rem;transition:opacity 0.9s var(--ease)}
 #loader.hidden{opacity:0;pointer-events:none}
-.loader-logo{font-family:var(--font-display);font-size:1.1rem;font-weight:800;letter-spacing:0.25em;text-transform:uppercase;color:var(--off)}
-.loader-bar-wrap{width:200px;height:1px;background:var(--border)}
+.loader-logo-wrap{opacity:0;transform:scale(0.75);transition:opacity 1s var(--ease),transform 1s cubic-bezier(0.34,1.3,0.64,1)}
+.loader-bar-wrap{width:100px;height:1px;background:var(--border);transition:opacity 0.3s}
 .loader-bar{height:1px;background:var(--off);width:0%;transition:width 0.05s linear}
-.loader-pct{font-size:0.7rem;letter-spacing:0.15em;color:var(--muted);font-variant-numeric:tabular-nums}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.75rem 4rem;display:flex;align-items:center;justify-content:space-between;transition:all 0.4s var(--ease)}
@@ -198,6 +197,7 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
 }
 @media(max-width:640px){
   h1{font-size:2.4rem}
+  .hero-tag{font-size:0.65rem;letter-spacing:0.1em}
   .problems-grid{grid-template-columns:1fr}
   .portfolio-grid{grid-template-columns:1fr}
   .cta-actions{flex-direction:column}
@@ -216,9 +216,8 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
 
 <!-- LOADER -->
 <div id="loader">
-  <div class="loader-logo">DBR<span style="color:var(--blue)">.</span></div>
-  <div class="loader-bar-wrap"><div class="loader-bar" id="lbar"></div></div>
-  <div class="loader-pct" id="lpct">0%</div>
+  <div class="loader-logo-wrap" id="llogow"></div>
+  <div class="loader-bar-wrap" id="lbarwrap"><div class="loader-bar" id="lbar"></div></div>
 </div>
 
 <!-- NAV -->
@@ -612,15 +611,56 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
 
 <script>
 // LOADER
-let pct=0;
 const lbar=document.getElementById('lbar');
-const lpct=document.getElementById('lpct');
+const lbarwrap=document.getElementById('lbarwrap');
 const loader=document.getElementById('loader');
+const llogow=document.getElementById('llogow');
+
+// Clona a logo do nav e injeta no loader
+(function(){
+  const src=document.querySelector('.nav-logo svg');
+  if(!src)return;
+  const svg=src.cloneNode(true);
+  svg.style.cssText='height:52px;width:auto;display:block';
+  llogow.appendChild(svg);
+})();
+
+// Logo aparece com spring
+setTimeout(()=>{
+  llogow.style.opacity='1';
+  llogow.style.transform='scale(1)';
+},120);
+
+let pct=0;
 const intv=setInterval(()=>{
   pct+=Math.random()*8+2;
-  if(pct>=100){pct=100;clearInterval(intv);setTimeout(()=>{loader.classList.add('hidden');initAnimations();},300)}
+  if(pct>=100){
+    pct=100;
+    lbar.style.width='100%';
+    clearInterval(intv);
+
+    // 1) Expande
+    setTimeout(()=>{
+      llogow.style.transition='transform 0.55s cubic-bezier(0.76,0,0.24,1),opacity 0.4s';
+      llogow.style.transform='scale(1.35)';
+      lbarwrap.style.opacity='0';
+    },250);
+
+    // 2) Voa para o topo
+    setTimeout(()=>{
+      llogow.style.transition='transform 0.7s cubic-bezier(0.76,0,0.24,1),opacity 0.45s 0.15s';
+      llogow.style.transform='translateY(-48vh) scale(0.16)';
+      llogow.style.opacity='0';
+    },820);
+
+    // 3) Página aparece
+    setTimeout(()=>{
+      loader.classList.add('hidden');
+      initAnimations();
+    },1420);
+    return;
+  }
   lbar.style.width=pct+'%';
-  lpct.textContent=Math.floor(pct)+'%';
 },60);
 
 // HERO ANIMATIONS
