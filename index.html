@@ -181,6 +181,13 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
 .modal-submit{width:100%;margin-top:1rem;font-family:var(--font-display);font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--black);background:var(--off);padding:1rem;border:none;cursor:pointer;transition:all 0.25s}
 .modal-submit:hover{background:var(--blue);color:var(--off)}
 
+/* HERO CURTAIN */
+#hero-curtain{position:fixed;inset:0;z-index:9000;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;will-change:transform}
+#hc-logo{opacity:0;transform:scale(0.35);will-change:transform,opacity}
+#hc-cue{position:absolute;bottom:3rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.75rem;opacity:0;transition:opacity 0.6s var(--ease)}
+#hc-cue-label{font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted)}
+#hc-line{width:1px;height:56px;background:linear-gradient(var(--off),transparent);animation:scrollLine 2s ease-in-out infinite}
+
 /* RESPONSIVE */
 @media(max-width:1024px){
   nav,section,footer,#stats .stat{padding-left:2rem;padding-right:2rem}
@@ -218,6 +225,13 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
 <div id="loader">
   <div class="loader-logo-wrap" id="llogow"></div>
   <div class="loader-bar-wrap" id="lbarwrap"><div class="loader-bar" id="lbar"></div></div>
+</div>
+<div id="hero-curtain">
+  <div id="hc-logo"></div>
+  <div id="hc-cue">
+    <span id="hc-cue-label">scroll</span>
+    <div id="hc-line"></div>
+  </div>
 </div>
 
 <!-- NAV -->
@@ -615,18 +629,27 @@ const lbar=document.getElementById('lbar');
 const lbarwrap=document.getElementById('lbarwrap');
 const loader=document.getElementById('loader');
 const llogow=document.getElementById('llogow');
+const hcurtain=document.getElementById('hero-curtain');
+const hclogo=document.getElementById('hc-logo');
+const hccue=document.getElementById('hc-cue');
 
-// Clona a logo do nav e injeta no loader
+// Injeta logo no loader
 (function(){
   const src=document.querySelector('.nav-logo svg');
   if(!src)return;
-  const svg=src.cloneNode(true);
-  svg.style.cssText='height:52px;width:auto;display:block';
-  llogow.appendChild(svg);
+  const s=src.cloneNode(true);
+  s.style.cssText='height:52px;width:auto;display:block';
+  llogow.appendChild(s);
+  // Injeta logo no hero-curtain (tamanho grande)
+  const s2=src.cloneNode(true);
+  s2.removeAttribute('style');
+  s2.style.cssText='height:clamp(110px,16vw,200px);width:auto;display:block';
+  hclogo.appendChild(s2);
 })();
 
-// Logo aparece com spring
+// Logo do loader aparece com spring
 setTimeout(()=>{
+  llogow.style.transition='opacity 0.9s var(--ease),transform 0.9s cubic-bezier(0.34,1.3,0.64,1)';
   llogow.style.opacity='1';
   llogow.style.transform='scale(1)';
 },120);
@@ -638,26 +661,17 @@ const intv=setInterval(()=>{
     pct=100;
     lbar.style.width='100%';
     clearInterval(intv);
-
-    // 1) Expande
+    // Expande levemente e barra some
     setTimeout(()=>{
-      llogow.style.transition='transform 0.55s cubic-bezier(0.76,0,0.24,1),opacity 0.4s';
-      llogow.style.transform='scale(1.35)';
+      llogow.style.transition='transform 0.5s cubic-bezier(0.76,0,0.24,1)';
+      llogow.style.transform='scale(1.12)';
       lbarwrap.style.opacity='0';
-    },250);
-
-    // 2) Voa para o topo
-    setTimeout(()=>{
-      llogow.style.transition='transform 0.7s cubic-bezier(0.76,0,0.24,1),opacity 0.45s 0.15s';
-      llogow.style.transform='translateY(-48vh) scale(0.16)';
-      llogow.style.opacity='0';
-    },820);
-
-    // 3) Página aparece
+    },200);
+    // Loader some, hero-curtain aparece
     setTimeout(()=>{
       loader.classList.add('hidden');
       initAnimations();
-    },1420);
+    },750);
     return;
   }
   lbar.style.width=pct+'%';
@@ -665,16 +679,37 @@ const intv=setInterval(()=>{
 
 // HERO ANIMATIONS
 function initAnimations(){
+  // Logo do curtain cresce com spring
+  hclogo.style.transition='opacity 0.8s var(--ease),transform 1s cubic-bezier(0.34,1.25,0.64,1)';
+  hclogo.style.opacity='1';
+  hclogo.style.transform='scale(1)';
+  // Remove transição após animação (parallax precisa ser direto)
+  setTimeout(()=>{hclogo.style.transition='none';},1100);
+  // Scroll hint aparece
+  setTimeout(()=>{hccue.style.opacity='1';},900);
+  // Hero text
   ['htag','hh1','hsub','hctas'].forEach((id,i)=>{
     setTimeout(()=>document.getElementById(id)?.classList.add('in'),i*180);
   });
   setTimeout(initReveal,600);
 }
 
-// NAV SCROLL
+// NAV SCROLL + CURTAIN PARALLAX
 window.addEventListener('scroll',()=>{
-  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60);
+  const sy=window.scrollY;
+  const vh=window.innerHeight;
+  document.getElementById('nav').classList.toggle('scrolled',sy>60);
   initReveal();
+  // Curtain parallax
+  if(sy>vh*1.1){hcurtain.style.display='none';return;}
+  hcurtain.style.display='flex';
+  hcurtain.style.transform=`translateY(-${sy}px)`;
+  const prog=Math.min(sy/vh,1);
+  // Logo sobe mais rápido e encolhe
+  hclogo.style.transform=`translateY(${-sy*0.35}px) scale(${Math.max(0.25,1-prog*0.78)})`;
+  hclogo.style.opacity=`${Math.max(0,1-prog*1.6)}`;
+  // Hint some rápido
+  hccue.style.opacity=`${Math.max(0,1-prog*6)}`;
 });
 
 // REVEAL ON SCROLL
