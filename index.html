@@ -136,7 +136,7 @@ section{padding:8rem 4rem;border-top:1px solid var(--border)}
 .lb-arrow:hover{border-color:rgba(245,240,234,0.45);color:var(--off)}
 .lb-prev{left:2rem}
 .lb-next{right:2rem}
-@media(max-width:640px){.lb-img-wrap{padding:5rem 1rem 2rem}.lb-arrow{display:none}.lb-header{padding:1.25rem 1.5rem}}
+@media(max-width:640px){.lb-img-wrap{padding:5rem 1rem 6rem}.lb-header{padding:1.25rem 1.5rem}.lb-arrow{display:flex;top:auto;bottom:1.5rem;transform:none;width:2.25rem;height:2.25rem;font-size:0.8rem}.lb-prev{left:calc(50% - 2.75rem)}.lb-next{right:calc(50% - 2.75rem)}}
 .portfolio-case{background:var(--black);overflow:hidden;cursor:pointer;position:relative}
 .case-img{width:100%;aspect-ratio:4/3;background:var(--surface);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);transition:background 0.3s}
 .portfolio-case:hover .case-img{background:var(--surface-hover)}
@@ -835,10 +835,59 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 <script>
 // LIGHTBOX
 const lbCases={
-  thais:{name:'Dra. Thais Favilla',imgs:['img/thais-portfolio.jpg','img/thais-estrategia.jpg','img/thais-sistema-visual.jpg','img/thais-brandbook.jpg']},
-  g10:{name:'G10 Academia',imgs:['img/g10-portfolio.jpg','img/g10-estrategia.jpg','img/g10-sinalizacao.png','img/g10-brandbook.jpg']},
-  toof:{name:'TOOF Challenge Day',imgs:['img/toof-portfolio.jpg','img/toof-estrategia.jpg','img/toof-cracha.jpg','img/toof-brandbook.jpg']},
-  greencoast:{name:'Green Coast Tour',imgs:['img/greencoast-portfolio.jpg','img/greencoast-estrategia.jpg','img/greencoast-uniforme.jpg','img/greencoast-brandbook.jpg']}
+  thais:{name:'Dra. Thais Favilla',imgs:[
+    'img/thais-portfolio.jpg',
+    'img/thais-estrategia.jpg',
+    'img/thais-sistema-visual.jpg',
+    'img/thais-case-elephant-bw.jpg',
+    'img/thais-case-logo-full.jpg',
+    'img/thais-case-logovars.jpg',
+    'img/thais-case-cores.jpg',
+    'img/thais-case-lobby.jpg',
+    'img/thais-brandbook.jpg',
+    'img/thais-case-bag.jpg'
+  ]},
+  g10:{name:'G10 Academia',imgs:[
+    'img/g10-portfolio.jpg',
+    'img/g10-estrategia.jpg',
+    'img/g10-case-logo-white.jpg',
+    'img/g10-case-logovars.jpg',
+    'img/g10-case-cores.jpg',
+    'img/g10-case-honeycomb.jpg',
+    'img/g10-case-bone.jpg',
+    'img/g10-case-garrafa.jpg',
+    'img/g10-sinalizacao.png',
+    'img/g10-case-social.jpg',
+    'img/g10-brandbook.jpg'
+  ]},
+  toof:{name:'TOOF Challenge Day',imgs:[
+    'img/toof-portfolio.jpg',
+    'img/toof-estrategia.jpg',
+    'img/toof-case-logo-bw.jpg',
+    'img/toof-case-logovars.jpg',
+    'img/toof-case-cores.jpg',
+    'img/toof-case-graffiti.jpg',
+    'img/toof-case-elementos.jpg',
+    'img/toof-case-stage.jpg',
+    'img/toof-case-festival.jpg',
+    'img/toof-cracha.jpg',
+    'img/toof-brandbook.jpg'
+  ]},
+  greencoast:{name:'Green Coast Tour',imgs:[
+    'img/greencoast-portfolio.jpg',
+    'img/greencoast-estrategia.jpg',
+    'img/greencoast-case-pilares.jpg',
+    'img/greencoast-case-cover.jpg',
+    'img/greencoast-case-logovars.jpg',
+    'img/greencoast-case-cores.jpg',
+    'img/greencoast-case-elementos.jpg',
+    'img/greencoast-case-pattern.jpg',
+    'img/greencoast-uniforme.jpg',
+    'img/greencoast-case-signage.jpg',
+    'img/greencoast-case-card.jpg',
+    'img/greencoast-case-folder.jpg',
+    'img/greencoast-case-social.jpg'
+  ]}
 };
 let lbActive,lbIdx=0;
 const lbOverlay=document.getElementById('lb-overlay');
@@ -876,6 +925,12 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowLeft')lbGo(-1);
   if(e.key==='ArrowRight')lbGo(1);
 });
+let lbTouchX=0;
+lbOverlay.addEventListener('touchstart',e=>{lbTouchX=e.touches[0].clientX;},{passive:true});
+lbOverlay.addEventListener('touchend',e=>{
+  const diff=lbTouchX-e.changedTouches[0].clientX;
+  if(Math.abs(diff)>50)lbGo(diff>0?1:-1);
+},{passive:true});
 </script>
 </body>
 </html>
