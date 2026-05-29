@@ -815,6 +815,24 @@ function submitModal(){
 document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 
+
+</script>
+
+<!-- LIGHTBOX -->
+<div id="lb-overlay" class="lb-overlay">
+  <div class="lb-header">
+    <span class="lb-client" id="lb-client"></span>
+    <span class="lb-counter" id="lb-counter"></span>
+    <button class="lb-close" id="lb-close">×</button>
+  </div>
+  <button class="lb-arrow lb-prev" id="lb-prev">←</button>
+  <div class="lb-img-wrap">
+    <img id="lb-img" src="" alt="">
+  </div>
+  <button class="lb-arrow lb-next" id="lb-next">→</button>
+</div>
+
+<script>
 // LIGHTBOX
 const lbCases={
   thais:{name:'Dra. Thais Favilla',imgs:['img/thais-portfolio.jpg','img/thais-estrategia.jpg','img/thais-sistema-visual.jpg','img/thais-brandbook.jpg']},
@@ -859,19 +877,5 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowRight')lbGo(1);
 });
 </script>
-
-<!-- LIGHTBOX -->
-<div id="lb-overlay" class="lb-overlay">
-  <div class="lb-header">
-    <span class="lb-client" id="lb-client"></span>
-    <span class="lb-counter" id="lb-counter"></span>
-    <button class="lb-close" id="lb-close">×</button>
-  </div>
-  <button class="lb-arrow lb-prev" id="lb-prev">←</button>
-  <div class="lb-img-wrap">
-    <img id="lb-img" src="" alt="">
-  </div>
-  <button class="lb-arrow lb-next" id="lb-next">→</button>
-</div>
 </body>
 </html>
