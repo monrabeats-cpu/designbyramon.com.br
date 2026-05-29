@@ -182,6 +182,9 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
 .footer-logo{font-family:var(--font-display);font-weight:800;font-size:0.9rem;letter-spacing:0.12em;text-transform:uppercase}
 .footer-logo span{color:var(--blue)}
 .footer-info{font-size:0.72rem;color:var(--muted);text-align:right;line-height:1.6}
+.footer-social{display:flex;gap:1.5rem;align-items:center}
+.footer-social a{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s;font-family:var(--font-display);font-weight:700}
+.footer-social a:hover{color:var(--off)}
 
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(5,5,5,0.92);z-index:500;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
@@ -197,6 +200,7 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
 .modal-field input:focus,.modal-field select:focus,.modal-field textarea:focus{border-color:var(--blue)}
 .modal-field select option{background:var(--black)}
 .modal-field textarea{resize:vertical;min-height:100px}
+.modal-field-error{font-size:0.7rem;color:#e05555;margin-top:0.35rem;display:none}.modal-field input.invalid,.modal-field select.invalid,.modal-field textarea.invalid{border-color:#e05555!important}
 .modal-submit{width:100%;margin-top:1rem;font-family:var(--font-display);font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--black);background:var(--off);padding:1rem;border:none;cursor:pointer;transition:all 0.25s}
 .modal-submit:hover{background:var(--blue);color:var(--off)}
 
@@ -245,6 +249,21 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
   footer{flex-direction:column;gap:1.5rem;text-align:center}
   .footer-info{text-align:center}
 }
+
+
+/* HAMBURGER MENU */
+.nav-hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:4px;z-index:200}
+.nav-hamburger span{display:block;width:22px;height:1.5px;background:var(--off);transition:all 0.3s var(--ease)}
+.nav-hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.nav-hamburger.open span:nth-child(2){opacity:0}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.mobile-menu{position:fixed;inset:0;z-index:150;background:rgba(5,5,5,0.97);backdrop-filter:blur(20px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;opacity:0;pointer-events:none;transition:opacity 0.4s var(--ease)}
+.mobile-menu.open{opacity:1;pointer-events:all}
+.mobile-menu a{font-size:1.5rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s;font-family:var(--font-display);font-weight:300}
+.mobile-menu a:hover{color:var(--off)}
+.mobile-menu-cta{margin-top:1rem;font-family:var(--font-display);font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--black);background:var(--off);padding:1rem 2.5rem;border:none;cursor:pointer;transition:all 0.25s}
+.mobile-menu-cta:hover{background:var(--blue);color:var(--off)}
+@media(max-width:1024px){.nav-hamburger{display:flex}#nav-cta-desk{display:none!important}}
 
 /* REVEAL */
 .reveal{opacity:0;transform:translateY(30px);transition:all 0.8s var(--ease)}
@@ -300,8 +319,18 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
     <li><a href="#portfolio">Projetos</a></li>
     <li><a href="#calculator">Orçamento</a></li>
   </ul>
-  <button class="nav-cta" onclick="openModal()">Iniciar projeto</button>
+  <button class="nav-cta" onclick="openModal()" id="nav-cta-desk">Iniciar projeto</button>
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Abrir menu"><span></span><span></span><span></span></button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#problems" onclick="closeMobileMenu()">Diagnóstico</a>
+  <a href="#method" onclick="closeMobileMenu()">Método</a>
+  <a href="#portfolio" onclick="closeMobileMenu()">Projetos</a>
+  <a href="#calculator" onclick="closeMobileMenu()">Investimento</a>
+  <button class="mobile-menu-cta" onclick="closeMobileMenu();openModal()">Iniciar projeto</button>
+</div>
 
 <!-- HERO -->
 <div id="intro-spacer"></div>
@@ -338,15 +367,15 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
 <!-- STATS -->
 <div id="stats">
   <div class="stat reveal">
-    <div class="stat-num">+20</div>
+    <div class="stat-num" data-target="20" data-prefix="+">+20</div>
     <div class="stat-label">Marcas construídas</div>
   </div>
   <div class="stat reveal">
-    <div class="stat-num">7+</div>
+    <div class="stat-num" data-target="7" data-suffix="+">7+</div>
     <div class="stat-label">Anos de experiência</div>
   </div>
   <div class="stat reveal">
-    <div class="stat-num">100%</div>
+    <div class="stat-num" data-target="100" data-suffix="%">100%</div>
     <div class="stat-label">Clientes satisfeitos</div>
   </div>
   <div class="stat reveal">
@@ -458,7 +487,7 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
   <h2 class="section-title reveal">Cases com contexto.<br><span style="font-family:var(--font-didot);font-style:italic;font-weight:400">Não só imagens.</span></h2>
   <div class="portfolio-grid reveal" id="pgrid">
     <div class="portfolio-case" data-cat="branding" onclick="openLb('thais')">
-      <div class="case-img"><img src="img/thais-portfolio.jpg" alt="Dra. Thais Favilla" style="width:100%;height:100%;object-fit:cover"></div>
+      <div class="case-img"><img src="img/thais-portfolio.jpg" alt="Dra. Thais Favilla" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>
       <div class="case-info">
         <div class="case-cat">Branding · Identidade Visual · Social Media</div>
         <div class="case-title">Dra. Thais Favilla · Psiquiatria Humanizada</div>
@@ -467,7 +496,7 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
       <div class="case-overlay">Ver case completo →</div>
     </div>
     <div class="portfolio-case" data-cat="branding" onclick="openLb('g10')">
-      <div class="case-img"><img src="img/g10-portfolio.jpg" alt="G10 Academia" style="width:100%;height:100%;object-fit:cover"></div>
+      <div class="case-img"><img src="img/g10-portfolio.jpg" alt="G10 Academia" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>
       <div class="case-info">
         <div class="case-cat">Branding · Identidade Visual</div>
         <div class="case-title">G10 Academia · Identidade que transmite força</div>
@@ -476,7 +505,7 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
       <div class="case-overlay">Ver case completo →</div>
     </div>
     <div class="portfolio-case" data-cat="branding" onclick="openLb('toof')">
-      <div class="case-img"><img src="img/toof-portfolio.jpg" alt="TOOF Challenge Day" style="width:100%;height:100%;object-fit:cover"></div>
+      <div class="case-img"><img src="img/toof-portfolio.jpg" alt="TOOF Challenge Day" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>
       <div class="case-info">
         <div class="case-cat">Branding · Identidade Visual · Evento</div>
         <div class="case-title">TOOF Challenge Day · Cultura de Rua</div>
@@ -485,7 +514,7 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
       <div class="case-overlay">Ver case completo →</div>
     </div>
     <div class="portfolio-case" data-cat="branding" onclick="openLb('greencoast')">
-      <div class="case-img"><img src="img/greencoast-portfolio.jpg" alt="Green Coast Tour" style="width:100%;height:100%;object-fit:cover"></div>
+      <div class="case-img"><img src="img/greencoast-portfolio.jpg" alt="Green Coast Tour" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>
       <div class="case-info">
         <div class="case-cat">Branding · Identidade Visual · Turismo</div>
         <div class="case-title">Green Coast Tour · Natureza com sofisticação</div>
@@ -540,6 +569,7 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
       <div class="calc-result-label">Estimativa de investimento</div>
       <div class="calc-result-range" id="crange">Selecione os serviços</div>
       <div class="calc-result-items" id="citems"><span class="calc-empty">Nenhum serviço selecionado ainda.</span></div>
+      <div class="calc-monthly-note" id="cmonth" style="display:none;font-size:0.72rem;color:var(--muted);margin-bottom:1.5rem;padding-top:0.75rem;border-top:1px solid var(--border)">* Social Media é um valor mensal recorrente, não incluso no total acima.</div>
       <button class="calc-cta" onclick="openModal()">Solicitar proposta formal →</button>
     </div>
   </div>
@@ -588,6 +618,10 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
     Angra dos Reis, Rio de Janeiro<br>
     designbyramon.com.br
   </div>
+  <div class="footer-social">
+    <a href="https://instagram.com/designbyramon" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
+    <a href="https://wa.me/5524993127696" target="_blank" rel="noopener" aria-label="WhatsApp">WA</a>
+  </div>
 </footer>
 
 <!-- MODAL -->
@@ -599,10 +633,12 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
     <div class="modal-field">
       <label>Nome completo</label>
       <input type="text" id="m-nome" placeholder="Seu nome">
+      <span class="modal-field-error" id="err-nome">Por favor, informe seu nome.</span>
     </div>
     <div class="modal-field">
       <label>WhatsApp</label>
       <input type="tel" id="m-whats" placeholder="(24) 99999-9999">
+      <span class="modal-field-error" id="err-whats">Por favor, informe seu WhatsApp.</span>
     </div>
     <div class="modal-field">
       <label>Tipo de negócio</label>
@@ -727,10 +763,33 @@ window.addEventListener('scroll',()=>{
 });
 
 // REVEAL ON SCROLL
+const animatedStats=new Set();
+function animateCounter(el){
+  if(animatedStats.has(el))return;
+  animatedStats.add(el);
+  const target=+el.dataset.target;
+  const prefix=el.dataset.prefix||'';
+  const suffix=el.dataset.suffix||'';
+  const duration=1200;
+  const start=performance.now();
+  function tick(now){
+    const elapsed=now-start;
+    const progress=Math.min(elapsed/duration,1);
+    const eased=1-Math.pow(1-progress,3);
+    const value=Math.round(eased*target);
+    el.textContent=prefix+value+suffix;
+    if(progress<1)requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
 function initReveal(){
   document.querySelectorAll('.reveal').forEach(el=>{
     const r=el.getBoundingClientRect();
     if(r.top<window.innerHeight-80)el.classList.add('in');
+  });
+  document.querySelectorAll('.stat-num[data-target]').forEach(el=>{
+    const r=el.getBoundingClientRect();
+    if(r.top<window.innerHeight-40)animateCounter(el);
   });
 }
 
@@ -750,8 +809,9 @@ document.querySelectorAll('.method-step-img').forEach(container=>{
 document.getElementById('msteps').addEventListener('click',e=>{
   const step=e.target.closest('.method-step');
   if(!step)return;
+  const isOpen=step.classList.contains('open');
   document.querySelectorAll('.method-step').forEach(s=>s.classList.remove('open'));
-  step.classList.add('open');
+  if(!isOpen)step.classList.add('open');
 });
 
 
@@ -764,31 +824,51 @@ function updateCalc(){
   const selected=[...document.querySelectorAll('.service-item.selected')];
   const range=document.getElementById('crange');
   const items=document.getElementById('citems');
+  const monthNote=document.getElementById('cmonth');
   if(!selected.length){
     range.textContent='Selecione os serviços';
     items.innerHTML='<span class="calc-empty">Nenhum serviço selecionado ainda.</span>';
+    if(monthNote)monthNote.style.display='none';
     return;
   }
-  let min=0,max=0;
+  let min=0,max=0,hasMonthly=false;
   let html='';
   selected.forEach(s=>{
-    min+=+s.dataset.min;max+=+s.dataset.max;
+    const isMonthly=s.querySelector('.service-price').textContent.includes('/mês');
+    if(!isMonthly){min+=+s.dataset.min;max+=+s.dataset.max;}
+    else{hasMonthly=true;}
     html+=`<div class="calc-result-item"><span>${s.querySelector('.service-name').textContent}</span><span>${s.querySelector('.service-price').textContent}</span></div>`;
   });
-  range.textContent=`R$${(min/1000).toFixed(1)}k – R$${(max/1000).toFixed(1)}k`;
+  if(monthNote)monthNote.style.display=hasMonthly?'block':'none';
+  if(min===0&&max===0){
+    range.textContent='Veja os valores ao lado';
+  }else{
+    range.textContent=`R$${(min/1000).toFixed(1)}k – R$${(max/1000).toFixed(1)}k`;
+  }
   items.innerHTML=html;
 }
 
 // MODAL
 function openModal(){document.getElementById('modal').classList.add('open')}
-function closeModal(){document.getElementById('modal').classList.remove('open')}
+function closeModal(){document.getElementById('modal').classList.remove('open');clearModalErrors();}
+function clearModalErrors(){
+  ['m-nome','m-whats'].forEach(id=>{
+    document.getElementById(id).classList.remove('invalid');
+  });
+  document.getElementById('err-nome').style.display='none';
+  document.getElementById('err-whats').style.display='none';
+}
 function submitModal(){
   const nome=document.getElementById('m-nome').value.trim();
   const whats=document.getElementById('m-whats').value.trim();
   const neg=document.getElementById('m-neg').value.trim();
   const svc=document.getElementById('m-svc').value;
   const obs=document.getElementById('m-obs').value.trim();
-  if(!nome||!whats){alert('Preencha nome e WhatsApp.');return}
+  clearModalErrors();
+  let hasError=false;
+  if(!nome){document.getElementById('m-nome').classList.add('invalid');document.getElementById('err-nome').style.display='block';hasError=true;}
+  if(!whats){document.getElementById('m-whats').classList.add('invalid');document.getElementById('err-whats').style.display='block';hasError=true;}
+  if(hasError)return;
   const btn=document.querySelector('.modal-submit');
   btn.disabled=true;
   btn.textContent='Enviando...';
@@ -812,7 +892,18 @@ function submitModal(){
     alert('Erro ao enviar. Tente novamente.');
   });
 }
-document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
+
+// HAMBURGER MENU
+const navHamburger=document.getElementById('nav-hamburger');
+const mobileMenu=document.getElementById('mobile-menu');
+function openMobileMenu(){navHamburger.classList.add('open');mobileMenu.classList.add('open');document.body.style.overflow='hidden';}
+function closeMobileMenu(){navHamburger.classList.remove('open');mobileMenu.classList.remove('open');document.body.style.overflow='';}
+navHamburger.addEventListener('click',()=>{
+  if(mobileMenu.classList.contains('open'))closeMobileMenu();else openMobileMenu();
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMobileMenu();});
+
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 
 
@@ -823,13 +914,13 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
   <div class="lb-header">
     <span class="lb-client" id="lb-client"></span>
     <span class="lb-counter" id="lb-counter"></span>
-    <button class="lb-close" id="lb-close">×</button>
+    <button class="lb-close" id="lb-close" aria-label="Fechar galeria">×</button>
   </div>
-  <button class="lb-arrow lb-prev" id="lb-prev">←</button>
+  <button class="lb-arrow lb-prev" id="lb-prev" aria-label="Imagem anterior">←</button>
   <div class="lb-img-wrap">
     <img id="lb-img" src="" alt="">
   </div>
-  <button class="lb-arrow lb-next" id="lb-next">→</button>
+  <button class="lb-arrow lb-next" id="lb-next" aria-label="Próxima imagem">→</button>
 </div>
 
 <script>
@@ -891,6 +982,7 @@ function openLb(key){
   lbClientEl.textContent=lbActive.name;
   lbImg.src=lbActive.imgs[0];
   updateLbCounter();
+  lbPreload(0);
   lbOverlay.classList.add('open');
   document.body.style.overflow='hidden';
 }
@@ -898,10 +990,15 @@ function closeLb(){
   lbOverlay.classList.remove('open');
   document.body.style.overflow='';
 }
+function lbPreload(idx){
+  const next=(idx+1)%lbActive.imgs.length;
+  const prev=(idx-1+lbActive.imgs.length)%lbActive.imgs.length;
+  [next,prev].forEach(i=>{const img=new Image();img.src=lbActive.imgs[i];});
+}
 function lbGo(dir){
   lbIdx=(lbIdx+dir+lbActive.imgs.length)%lbActive.imgs.length;
   lbImg.classList.add('fade');
-  setTimeout(()=>{lbImg.src=lbActive.imgs[lbIdx];updateLbCounter();lbImg.classList.remove('fade');},200);
+  setTimeout(()=>{lbImg.src=lbActive.imgs[lbIdx];updateLbCounter();lbImg.classList.remove('fade');lbPreload(lbIdx);},200);
 }
 function updateLbCounter(){
   lbCounterEl.textContent=String(lbIdx+1).padStart(2,'0')+' / '+String(lbActive.imgs.length).padStart(2,'0');
