@@ -106,7 +106,11 @@ section{padding:8rem 4rem;border-top:1px solid var(--border)}
 .method-step-icon{font-size:0.75rem;color:var(--muted);transition:transform 0.3s}
 .method-step.open .method-step-icon{transform:rotate(45deg)}
 .method-step-body{font-size:0.85rem;color:var(--muted);line-height:1.7;max-height:0;overflow:hidden;transition:max-height 0.4s var(--ease),padding 0.3s}
-.method-step.open .method-step-body{max-height:200px;padding-top:1rem}
+.method-step.open .method-step-body{max-height:500px;padding-top:1rem}
+.method-step-inner{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.method-step-img{aspect-ratio:4/3;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);overflow:hidden}
+.method-step-img img{width:100%;height:100%;object-fit:cover}
+@media(max-width:640px){.method-step-inner{grid-template-columns:1fr}}
 .method-visual{position:sticky;top:10rem}
 .method-visual-box{background:var(--surface);border:1px solid var(--border);padding:3rem;aspect-ratio:1;display:flex;flex-direction:column;justify-content:space-between}
 .method-visual-title{font-family:var(--font-display);font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)}
@@ -369,44 +373,50 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
     </div>
     <p style="font-size:0.9rem;color:var(--muted);line-height:1.7;padding-top:4rem" class="reveal">Não entrego só arquivos. Entrego uma marca que comunica, convence e cresce com o negócio. Todo projeto inclui três entregas fundamentais que garantem que sua marca funciona hoje e escala no futuro.</p>
   </div>
-  <div class="method-wrap">
-    <div class="method-steps" id="msteps">
-      <div class="method-step open" data-step="0">
-        <div class="method-step-head">
-          <div class="method-step-label">
-            <span class="method-step-num">01</span>
-            <span class="method-step-title">Estratégia de Marca</span>
-          </div>
-          <span class="method-step-icon">+</span>
+  <div class="method-steps" id="msteps" style="margin-top:4rem">
+    <div class="method-step open" data-step="0">
+      <div class="method-step-head">
+        <div class="method-step-label">
+          <span class="method-step-num">01</span>
+          <span class="method-step-title">Estratégia de Marca</span>
         </div>
-        <div class="method-step-body">Posicionamento definido, proposta de valor e tom de voz. Você sai sabendo exatamente o que sua marca representa, para quem fala e como se diferencia no mercado.</div>
+        <span class="method-step-icon">+</span>
       </div>
-      <div class="method-step" data-step="1">
-        <div class="method-step-head">
-          <div class="method-step-label">
-            <span class="method-step-num">02</span>
-            <span class="method-step-title">Sistema Visual</span>
-          </div>
-          <span class="method-step-icon">+</span>
+      <div class="method-step-body">
+        <div class="method-step-inner">
+          <p>Posicionamento definido, proposta de valor e tom de voz. Você sai sabendo exatamente o que sua marca representa, para quem fala e como se diferencia no mercado.</p>
+          <div class="method-step-img">Em breve</div>
         </div>
-        <div class="method-step-body">Logo, paleta, tipografia e elementos gráficos que formam uma identidade coesa. Uma linguagem visual que funciona do cartão ao outdoor, do post ao site.</div>
-      </div>
-      <div class="method-step" data-step="2">
-        <div class="method-step-head">
-          <div class="method-step-label">
-            <span class="method-step-num">03</span>
-            <span class="method-step-title">Brand Book</span>
-          </div>
-          <span class="method-step-icon">+</span>
-        </div>
-        <div class="method-step-body">Manual completo com todas as regras e aplicações da marca. Qualquer pessoa que trabalhar com sua comunicação saberá exatamente como usar cada elemento.</div>
       </div>
     </div>
-    <div class="method-visual reveal">
-      <div class="method-visual-box">
-        <div class="method-visual-title">Fase atual</div>
-        <div class="method-visual-main" id="mvis-main">01<br>Estratégia</div>
-        <div class="method-visual-sub" id="mvis-sub">Posicionamento, proposta de valor e tom de voz da marca.</div>
+    <div class="method-step" data-step="1">
+      <div class="method-step-head">
+        <div class="method-step-label">
+          <span class="method-step-num">02</span>
+          <span class="method-step-title">Sistema Visual</span>
+        </div>
+        <span class="method-step-icon">+</span>
+      </div>
+      <div class="method-step-body">
+        <div class="method-step-inner">
+          <p>Logo, paleta, tipografia e elementos gráficos que formam uma identidade coesa. Uma linguagem visual que funciona do cartão ao outdoor, do post ao site.</p>
+          <div class="method-step-img">Em breve</div>
+        </div>
+      </div>
+    </div>
+    <div class="method-step" data-step="2">
+      <div class="method-step-head">
+        <div class="method-step-label">
+          <span class="method-step-num">03</span>
+          <span class="method-step-title">Brand Book</span>
+        </div>
+        <span class="method-step-icon">+</span>
+      </div>
+      <div class="method-step-body">
+        <div class="method-step-inner">
+          <p>Manual completo com todas as regras e aplicações da marca. Qualquer pessoa que trabalhar com sua comunicação saberá exatamente como usar cada elemento.</p>
+          <div class="method-step-img">Em breve</div>
+        </div>
       </div>
     </div>
   </div>
@@ -719,19 +729,11 @@ function initReveal(){
 }
 
 // METHOD ACCORDION
-const steps=[
-  {main:'01\nEstratégia',sub:'Posicionamento, proposta de valor e tom de voz da marca.'},
-  {main:'02\nSistema Visual',sub:'Logo, paleta, tipografia e elementos gráficos completos.'},
-  {main:'03\nBrand Book',sub:'Manual de uso com regras e aplicações para qualquer contexto.'},
-];
 document.getElementById('msteps').addEventListener('click',e=>{
   const step=e.target.closest('.method-step');
   if(!step)return;
   document.querySelectorAll('.method-step').forEach(s=>s.classList.remove('open'));
   step.classList.add('open');
-  const i=+step.dataset.step;
-  document.getElementById('mvis-main').innerHTML=steps[i].main.replace('\n','<br>');
-  document.getElementById('mvis-sub').textContent=steps[i].sub;
 });
 
 // PORTFOLIO FILTER
