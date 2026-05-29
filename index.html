@@ -365,9 +365,9 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
   <div style="display:grid;grid-template-columns:1fr 2fr;gap:4rem;align-items:start">
     <div>
       <div class="section-tag reveal">Método</div>
-      <h2 class="section-title reveal">Como uma marca<br><span style="font-family:var(--font-didot);font-style:italic;font-weight:400">se transforma</span></h2>
+      <h2 class="section-title reveal">O que você leva<br><span style="font-family:var(--font-didot);font-style:italic;font-weight:400">ao final do projeto</span></h2>
     </div>
-    <p style="font-size:0.9rem;color:var(--muted);line-height:1.7;padding-top:4rem" class="reveal">Não entrego só arquivos. Entrego uma marca que comunica, convence e cresce com o negócio. O processo começa no diagnóstico e termina com um sistema visual completo e uma narrativa clara.</p>
+    <p style="font-size:0.9rem;color:var(--muted);line-height:1.7;padding-top:4rem" class="reveal">Não entrego só arquivos. Entrego uma marca que comunica, convence e cresce com o negócio. Todo projeto inclui três entregas fundamentais que garantem que sua marca funciona hoje e escala no futuro.</p>
   </div>
   <div class="method-wrap">
     <div class="method-steps" id="msteps">
@@ -375,48 +375,38 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
         <div class="method-step-head">
           <div class="method-step-label">
             <span class="method-step-num">01</span>
-            <span class="method-step-title">Descoberta estratégica</span>
+            <span class="method-step-title">Estratégia de Marca</span>
           </div>
           <span class="method-step-icon">+</span>
         </div>
-        <div class="method-step-body">Imersão profunda no negócio, mercado, concorrentes e público. Entendo o que você faz, para quem faz, e o que te diferencia de verdade. Não o que você acha que te diferencia.</div>
+        <div class="method-step-body">Posicionamento definido, proposta de valor e tom de voz. Você sai sabendo exatamente o que sua marca representa, para quem fala e como se diferencia no mercado.</div>
       </div>
       <div class="method-step" data-step="1">
         <div class="method-step-head">
           <div class="method-step-label">
             <span class="method-step-num">02</span>
-            <span class="method-step-title">Posicionamento</span>
+            <span class="method-step-title">Sistema Visual</span>
           </div>
           <span class="method-step-icon">+</span>
         </div>
-        <div class="method-step-body">Definição do território da marca: o que você representa, para quem e de que forma. Proposta de valor única, tom de voz e o espaço que você vai ocupar na mente do cliente.</div>
+        <div class="method-step-body">Logo, paleta, tipografia e elementos gráficos que formam uma identidade coesa. Uma linguagem visual que funciona do cartão ao outdoor, do post ao site.</div>
       </div>
       <div class="method-step" data-step="2">
         <div class="method-step-head">
           <div class="method-step-label">
             <span class="method-step-num">03</span>
-            <span class="method-step-title">Identidade visual</span>
+            <span class="method-step-title">Brand Book</span>
           </div>
           <span class="method-step-icon">+</span>
         </div>
-        <div class="method-step-body">Criação do sistema visual completo: logo, paleta, tipografia, elementos gráficos, padrões. Uma identidade que escala: de um cartão a um outdoor, de um post a um site.</div>
-      </div>
-      <div class="method-step" data-step="3">
-        <div class="method-step-head">
-          <div class="method-step-label">
-            <span class="method-step-num">04</span>
-            <span class="method-step-title">Aplicação & entrega</span>
-          </div>
-          <span class="method-step-icon">+</span>
-        </div>
-        <div class="method-step-body">Aplicação da identidade nos pontos de contato prioritários e entrega do Brand Book completo: manual de uso, regras, variações e guia de aplicação para qualquer contexto futuro.</div>
+        <div class="method-step-body">Manual completo com todas as regras e aplicações da marca. Qualquer pessoa que trabalhar com sua comunicação saberá exatamente como usar cada elemento.</div>
       </div>
     </div>
     <div class="method-visual reveal">
       <div class="method-visual-box">
         <div class="method-visual-title">Fase atual</div>
-        <div class="method-visual-main" id="mvis-main">01<br>Descoberta</div>
-        <div class="method-visual-sub" id="mvis-sub">Imersão, pesquisa e diagnóstico estratégico da marca e mercado.</div>
+        <div class="method-visual-main" id="mvis-main">01<br>Estratégia</div>
+        <div class="method-visual-sub" id="mvis-sub">Posicionamento, proposta de valor e tom de voz da marca.</div>
       </div>
     </div>
   </div>
@@ -730,10 +720,9 @@ function initReveal(){
 
 // METHOD ACCORDION
 const steps=[
-  {main:'01\nDescoberta',sub:'Imersão, pesquisa e diagnóstico estratégico da marca e mercado.'},
-  {main:'02\nPositioning',sub:'Definição de território, proposta de valor e tom de voz da marca.'},
-  {main:'03\nIdentidade',sub:'Sistema visual completo: logo, paleta, tipografia e elementos.'},
-  {main:'04\nEntrega',sub:'Aplicações, Brand Book e guia de uso para qualquer contexto.'},
+  {main:'01\nEstratégia',sub:'Posicionamento, proposta de valor e tom de voz da marca.'},
+  {main:'02\nSistema Visual',sub:'Logo, paleta, tipografia e elementos gráficos completos.'},
+  {main:'03\nBrand Book',sub:'Manual de uso com regras e aplicações para qualquer contexto.'},
 ];
 document.getElementById('msteps').addEventListener('click',e=>{
   const step=e.target.closest('.method-step');
