@@ -108,8 +108,9 @@ section{padding:8rem 4rem;border-top:1px solid var(--border)}
 .method-step-body{font-size:0.85rem;color:var(--muted);line-height:1.7;max-height:0;overflow:hidden;transition:max-height 0.4s var(--ease),padding 0.3s}
 .method-step.open .method-step-body{max-height:500px;padding-top:1rem}
 .method-step-inner{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
-.method-step-img{aspect-ratio:4/3;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);overflow:hidden}
-.method-step-img img{width:100%;height:100%;object-fit:cover}
+.method-step-img{aspect-ratio:4/3;background:var(--surface);border:1px solid var(--border);overflow:hidden;position:relative}
+.method-step-img .slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s var(--ease)}
+.method-step-img .slide.active{opacity:1}
 @media(max-width:640px){.method-step-inner{grid-template-columns:1fr}}
 .method-visual{position:sticky;top:10rem}
 .method-visual-box{background:var(--surface);border:1px solid var(--border);padding:3rem;aspect-ratio:1;display:flex;flex-direction:column;justify-content:space-between}
@@ -385,7 +386,11 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
       <div class="method-step-body">
         <div class="method-step-inner">
           <p>Posicionamento definido, proposta de valor e tom de voz. Você sai sabendo exatamente o que sua marca representa, para quem fala e como se diferencia no mercado.</p>
-          <div class="method-step-img"><img src="img/thais-estrategia.jpg" alt="Estratégia de Marca · Dra. Thais Favilla"></div>
+          <div class="method-step-img">
+            <img src="img/thais-estrategia.jpg" alt="Thais Favilla · Estratégia" class="slide active">
+            <img src="img/g10-estrategia.jpg" alt="G10 Academia · Estratégia" class="slide">
+            <img src="img/toof-estrategia.jpg" alt="TOOF Challenge Day · Estratégia" class="slide">
+          </div>
         </div>
       </div>
     </div>
@@ -400,7 +405,11 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
       <div class="method-step-body">
         <div class="method-step-inner">
           <p>Logo, paleta, tipografia e elementos gráficos que formam uma identidade coesa. Uma linguagem visual que funciona do cartão ao outdoor, do post ao site.</p>
-          <div class="method-step-img"><img src="img/thais-sistema-visual.jpg" alt="Sistema Visual · Dra. Thais Favilla"></div>
+          <div class="method-step-img">
+            <img src="img/thais-sistema-visual.jpg" alt="Thais Favilla · Sistema Visual" class="slide active">
+            <img src="img/g10-sistema-visual.jpg" alt="G10 Academia · Sistema Visual" class="slide">
+            <img src="img/toof-sistema-visual.jpg" alt="TOOF Challenge Day · Sistema Visual" class="slide">
+          </div>
         </div>
       </div>
     </div>
@@ -415,7 +424,11 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
       <div class="method-step-body">
         <div class="method-step-inner">
           <p>Manual completo com todas as regras e aplicações da marca. Qualquer pessoa que trabalhar com sua comunicação saberá exatamente como usar cada elemento.</p>
-          <div class="method-step-img"><img src="img/thais-brandbook.jpg" alt="Brand Book · Dra. Thais Favilla"></div>
+          <div class="method-step-img">
+            <img src="img/thais-brandbook.jpg" alt="Thais Favilla · Brand Book" class="slide active">
+            <img src="img/g10-brandbook.jpg" alt="G10 Academia · Brand Book" class="slide">
+            <img src="img/toof-brandbook.jpg" alt="TOOF Challenge Day · Brand Book" class="slide">
+          </div>
         </div>
       </div>
     </div>
@@ -448,6 +461,15 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
         <div class="case-cat">Branding · Identidade Visual</div>
         <div class="case-title">G10 Academia · Identidade que transmite força</div>
         <div class="case-result"><strong>Entrega:</strong> Logotipo, sistema visual completo e brand book.</div>
+      </div>
+      <div class="case-overlay">Ver case completo →</div>
+    </div>
+    <div class="portfolio-case" data-cat="branding">
+      <div class="case-img"><img src="img/toof-portfolio.jpg" alt="TOOF Challenge Day" style="width:100%;height:100%;object-fit:cover"></div>
+      <div class="case-info">
+        <div class="case-cat">Branding · Identidade Visual · Evento</div>
+        <div class="case-title">TOOF Challenge Day · Cultura de Rua</div>
+        <div class="case-result"><strong>Entrega:</strong> Identidade visual completa para evento de skate e BMX.</div>
       </div>
       <div class="case-overlay">Ver case completo →</div>
     </div>
@@ -691,6 +713,18 @@ function initReveal(){
     if(r.top<window.innerHeight-80)el.classList.add('in');
   });
 }
+
+// MÉTODO SLIDESHOW
+document.querySelectorAll('.method-step-img').forEach(container=>{
+  const slides=container.querySelectorAll('.slide');
+  if(slides.length<=1)return;
+  let i=0;
+  setInterval(()=>{
+    slides[i].classList.remove('active');
+    i=(i+1)%slides.length;
+    slides[i].classList.add('active');
+  },3000);
+});
 
 // METHOD ACCORDION
 document.getElementById('msteps').addEventListener('click',e=>{
