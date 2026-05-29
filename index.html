@@ -120,6 +120,23 @@ section{padding:8rem 4rem;border-top:1px solid var(--border)}
 
 /* PORTFOLIO */
 .portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+
+/* LIGHTBOX */
+.lb-overlay{position:fixed;inset:0;z-index:999;background:rgba(5,5,5,0.88);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.5s var(--ease)}
+.lb-overlay.open{opacity:1;pointer-events:all}
+.lb-header{position:fixed;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:1.5rem 2.5rem;border-bottom:1px solid rgba(245,240,234,0.08);z-index:1000}
+.lb-client{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(245,240,234,0.4);font-family:var(--font-body)}
+.lb-counter{font-size:0.65rem;letter-spacing:0.12em;color:rgba(245,240,234,0.2);font-family:var(--font-body);position:absolute;left:50%;transform:translateX(-50%)}
+.lb-close{background:none;border:1px solid rgba(245,240,234,0.15);color:rgba(245,240,234,0.4);width:2.25rem;height:2.25rem;cursor:pointer;font-size:1rem;line-height:1;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-family:var(--font-body)}
+.lb-close:hover{border-color:rgba(245,240,234,0.5);color:var(--off)}
+.lb-img-wrap{width:100%;max-width:1100px;padding:5rem 5rem 3rem;display:flex;align-items:center;justify-content:center}
+.lb-img-wrap img{max-width:100%;max-height:80vh;object-fit:contain;transition:opacity 0.25s var(--ease)}
+.lb-img-wrap img.fade{opacity:0}
+.lb-arrow{position:fixed;top:50%;transform:translateY(-50%);background:none;border:1px solid rgba(245,240,234,0.12);color:rgba(245,240,234,0.35);width:2.75rem;height:2.75rem;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;transition:all 0.25s var(--ease)}
+.lb-arrow:hover{border-color:rgba(245,240,234,0.45);color:var(--off)}
+.lb-prev{left:2rem}
+.lb-next{right:2rem}
+@media(max-width:640px){.lb-img-wrap{padding:5rem 1rem 2rem}.lb-arrow{display:none}.lb-header{padding:1.25rem 1.5rem}}
 .portfolio-case{background:var(--black);overflow:hidden;cursor:pointer;position:relative}
 .case-img{width:100%;aspect-ratio:4/3;background:var(--surface);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);transition:background 0.3s}
 .portfolio-case:hover .case-img{background:var(--surface-hover)}
@@ -440,7 +457,7 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
   <div class="section-tag reveal">Projetos</div>
   <h2 class="section-title reveal">Cases com contexto.<br><span style="font-family:var(--font-didot);font-style:italic;font-weight:400">Não só imagens.</span></h2>
   <div class="portfolio-grid reveal" id="pgrid">
-    <div class="portfolio-case" data-cat="branding">
+    <div class="portfolio-case" data-cat="branding" onclick="openLb('thais')">
       <div class="case-img"><img src="img/thais-portfolio.jpg" alt="Dra. Thais Favilla" style="width:100%;height:100%;object-fit:cover"></div>
       <div class="case-info">
         <div class="case-cat">Branding · Identidade Visual · Social Media</div>
@@ -449,7 +466,7 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
       </div>
       <div class="case-overlay">Ver case completo →</div>
     </div>
-    <div class="portfolio-case" data-cat="branding">
+    <div class="portfolio-case" data-cat="branding" onclick="openLb('g10')">
       <div class="case-img"><img src="img/g10-portfolio.jpg" alt="G10 Academia" style="width:100%;height:100%;object-fit:cover"></div>
       <div class="case-info">
         <div class="case-cat">Branding · Identidade Visual</div>
@@ -458,7 +475,7 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
       </div>
       <div class="case-overlay">Ver case completo →</div>
     </div>
-    <div class="portfolio-case" data-cat="branding">
+    <div class="portfolio-case" data-cat="branding" onclick="openLb('toof')">
       <div class="case-img"><img src="img/toof-portfolio.jpg" alt="TOOF Challenge Day" style="width:100%;height:100%;object-fit:cover"></div>
       <div class="case-info">
         <div class="case-cat">Branding · Identidade Visual · Evento</div>
@@ -467,7 +484,7 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
       </div>
       <div class="case-overlay">Ver case completo →</div>
     </div>
-    <div class="portfolio-case" data-cat="branding">
+    <div class="portfolio-case" data-cat="branding" onclick="openLb('greencoast')">
       <div class="case-img"><img src="img/greencoast-portfolio.jpg" alt="Green Coast Tour" style="width:100%;height:100%;object-fit:cover"></div>
       <div class="case-info">
         <div class="case-cat">Branding · Identidade Visual · Turismo</div>
@@ -797,6 +814,64 @@ function submitModal(){
 }
 document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+// LIGHTBOX
+const lbCases={
+  thais:{name:'Dra. Thais Favilla',imgs:['img/thais-portfolio.jpg','img/thais-estrategia.jpg','img/thais-sistema-visual.jpg','img/thais-brandbook.jpg']},
+  g10:{name:'G10 Academia',imgs:['img/g10-portfolio.jpg','img/g10-estrategia.jpg','img/g10-sinalizacao.png','img/g10-brandbook.jpg']},
+  toof:{name:'TOOF Challenge Day',imgs:['img/toof-portfolio.jpg','img/toof-estrategia.jpg','img/toof-cracha.jpg','img/toof-brandbook.jpg']},
+  greencoast:{name:'Green Coast Tour',imgs:['img/greencoast-portfolio.jpg','img/greencoast-estrategia.jpg','img/greencoast-uniforme.jpg','img/greencoast-brandbook.jpg']}
+};
+let lbActive,lbIdx=0;
+const lbOverlay=document.getElementById('lb-overlay');
+const lbImg=document.getElementById('lb-img');
+const lbClientEl=document.getElementById('lb-client');
+const lbCounterEl=document.getElementById('lb-counter');
+
+function openLb(key){
+  lbActive=lbCases[key];lbIdx=0;
+  lbClientEl.textContent=lbActive.name;
+  lbImg.src=lbActive.imgs[0];
+  updateLbCounter();
+  lbOverlay.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeLb(){
+  lbOverlay.classList.remove('open');
+  document.body.style.overflow='';
+}
+function lbGo(dir){
+  lbIdx=(lbIdx+dir+lbActive.imgs.length)%lbActive.imgs.length;
+  lbImg.classList.add('fade');
+  setTimeout(()=>{lbImg.src=lbActive.imgs[lbIdx];updateLbCounter();lbImg.classList.remove('fade');},200);
+}
+function updateLbCounter(){
+  lbCounterEl.textContent=String(lbIdx+1).padStart(2,'0')+' / '+String(lbActive.imgs.length).padStart(2,'0');
+}
+document.getElementById('lb-close').addEventListener('click',closeLb);
+document.getElementById('lb-prev').addEventListener('click',()=>lbGo(-1));
+document.getElementById('lb-next').addEventListener('click',()=>lbGo(1));
+lbOverlay.addEventListener('click',e=>{if(e.target===lbOverlay)closeLb();});
+document.addEventListener('keydown',e=>{
+  if(!lbOverlay.classList.contains('open'))return;
+  if(e.key==='Escape')closeLb();
+  if(e.key==='ArrowLeft')lbGo(-1);
+  if(e.key==='ArrowRight')lbGo(1);
+});
 </script>
+
+<!-- LIGHTBOX -->
+<div id="lb-overlay" class="lb-overlay">
+  <div class="lb-header">
+    <span class="lb-client" id="lb-client"></span>
+    <span class="lb-counter" id="lb-counter"></span>
+    <button class="lb-close" id="lb-close">×</button>
+  </div>
+  <button class="lb-arrow lb-prev" id="lb-prev">←</button>
+  <div class="lb-img-wrap">
+    <img id="lb-img" src="" alt="">
+  </div>
+  <button class="lb-arrow lb-next" id="lb-next">→</button>
+</div>
 </body>
 </html>
