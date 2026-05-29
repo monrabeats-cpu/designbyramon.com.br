@@ -119,9 +119,6 @@ section{padding:8rem 4rem;border-top:1px solid var(--border)}
 .method-visual-sub{font-size:0.8rem;color:var(--muted);transition:all 0.4s var(--ease)}
 
 /* PORTFOLIO */
-.portfolio-filters{display:flex;gap:0.75rem;flex-wrap:wrap;margin:3rem 0}
-.filter-btn{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--border);padding:0.5rem 1.25rem;cursor:pointer;transition:all 0.2s;font-family:var(--font-body)}
-.filter-btn.active,.filter-btn:hover{color:var(--off);border-color:var(--border-strong)}
 .portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
 .portfolio-case{background:var(--black);overflow:hidden;cursor:pointer;position:relative}
 .case-img{width:100%;aspect-ratio:4/3;background:var(--surface);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);transition:background 0.3s}
@@ -442,12 +439,6 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
 <section id="portfolio">
   <div class="section-tag reveal">Projetos</div>
   <h2 class="section-title reveal">Cases com contexto.<br><span style="font-family:var(--font-didot);font-style:italic;font-weight:400">Não só imagens.</span></h2>
-  <div class="portfolio-filters reveal">
-    <button class="filter-btn active" onclick="filterP(this,'all')">Todos</button>
-    <button class="filter-btn" onclick="filterP(this,'branding')">Branding</button>
-    <button class="filter-btn" onclick="filterP(this,'social')">Social Media</button>
-    <button class="filter-btn" onclick="filterP(this,'web')">Websites</button>
-  </div>
   <div class="portfolio-grid reveal" id="pgrid">
     <div class="portfolio-case" data-cat="branding">
       <div class="case-img"><img src="img/thais-portfolio.jpg" alt="Dra. Thais Favilla" style="width:100%;height:100%;object-fit:cover"></div>
@@ -491,15 +482,6 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
         <div class="case-cat">Branding · Logotipo</div>
         <div class="case-title">Header · Performance &amp; Vendas</div>
         <div class="case-result"><strong>Entrega:</strong> Logotipo e sistema de identidade para agência de gestão de tráfego.</div>
-      </div>
-      <div class="case-overlay">Ver case completo →</div>
-    </div>
-    <div class="portfolio-case" data-cat="social">
-      <div class="case-img"><img src="img/header-social.png" alt="Header · Social Media" style="width:100%;height:100%;object-fit:cover;object-position:center top"></div>
-      <div class="case-info">
-        <div class="case-cat">Social Media · Conteúdo</div>
-        <div class="case-title">Header · Conteúdo que converte</div>
-        <div class="case-result"><strong>Entrega:</strong> Carrosséis editoriais com o cliente como protagonista da comunicação.</div>
       </div>
       <div class="case-overlay">Ver case completo →</div>
     </div>
@@ -764,14 +746,6 @@ document.getElementById('msteps').addEventListener('click',e=>{
   step.classList.add('open');
 });
 
-// PORTFOLIO FILTER
-function filterP(btn,cat){
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.portfolio-case').forEach(c=>{
-    c.style.display=(cat==='all'||c.dataset.cat===cat)?'block':'none';
-  });
-}
 
 // CALCULATOR
 function toggleService(el){
