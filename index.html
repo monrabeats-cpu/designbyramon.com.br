@@ -200,6 +200,7 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
 .modal-field input:focus,.modal-field select:focus,.modal-field textarea:focus{border-color:var(--blue)}
 .modal-field select option{background:var(--black)}
 .modal-field textarea{resize:vertical;min-height:100px}
+.modal-honeypot{position:absolute;left:-9999px;top:-9999px;opacity:0;pointer-events:none;tab-index:-1;height:0;overflow:hidden}
 .modal-field-error{font-size:0.7rem;color:#e05555;margin-top:0.35rem;display:none}.modal-field input.invalid,.modal-field select.invalid,.modal-field textarea.invalid{border-color:#e05555!important}
 .modal-submit{width:100%;margin-top:1rem;font-family:var(--font-display);font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--black);background:var(--off);padding:1rem;border:none;cursor:pointer;transition:all 0.25s}
 .modal-submit:hover{background:var(--blue);color:var(--off)}
@@ -661,6 +662,7 @@ footer{padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-i
       <label>Contexto do projeto (opcional)</label>
       <textarea id="m-obs" placeholder="Conta um pouco sobre o seu negócio e o que precisa..."></textarea>
     </div>
+    <div class="modal-honeypot" aria-hidden="true"><label>Não preencha este campo<input type="text" id="m-bot" name="bot-field" autocomplete="off" tabindex="-1"></label></div>
     <button class="modal-submit" onclick="submitModal()">Enviar solicitação</button>
   </div>
 </div>
@@ -832,12 +834,20 @@ function updateCalc(){
     return;
   }
   let min=0,max=0,hasMonthly=false;
-  let html='';
+  items.innerHTML='';
   selected.forEach(s=>{
     const isMonthly=s.querySelector('.service-price').textContent.includes('/mês');
     if(!isMonthly){min+=+s.dataset.min;max+=+s.dataset.max;}
     else{hasMonthly=true;}
-    html+=`<div class="calc-result-item"><span>${s.querySelector('.service-name').textContent}</span><span>${s.querySelector('.service-price').textContent}</span></div>`;
+    const row=document.createElement('div');
+    row.className='calc-result-item';
+    const nameSpan=document.createElement('span');
+    nameSpan.textContent=s.querySelector('.service-name').textContent;
+    const priceSpan=document.createElement('span');
+    priceSpan.textContent=s.querySelector('.service-price').textContent;
+    row.appendChild(nameSpan);
+    row.appendChild(priceSpan);
+    items.appendChild(row);
   });
   if(monthNote)monthNote.style.display=hasMonthly?'block':'none';
   if(min===0&&max===0){
@@ -845,7 +855,6 @@ function updateCalc(){
   }else{
     range.textContent=`R$${(min/1000).toFixed(1)}k – R$${(max/1000).toFixed(1)}k`;
   }
-  items.innerHTML=html;
 }
 
 // MODAL
@@ -858,24 +867,73 @@ function clearModalErrors(){
   document.getElementById('err-nome').style.display='none';
   document.getElementById('err-whats').style.display='none';
 }
+// Rate limiting: max 3 envios por sessão, intervalo mínimo de 30s
+const _submitLog={count:0,lastAt:0};
+
+function _sanitize(str){
+  return str.replace(/[<>"'`;&\\]/g,'').substring(0,500);
+}
+function _validPhone(str){
+  return /^[\d\s()\-+]{8,20}$/.test(str);
+}
+function _validName(str){
+  return str.length>=2&&str.length<=120&&!/[<>"'`;&]/.test(str);
+}
+
 function submitModal(){
-  const nome=document.getElementById('m-nome').value.trim();
+  // Honeypot: se bot preencheu o campo oculto, ignora silenciosamente
+  if(document.getElementById('m-bot').value)return;
+
+  const nome=_sanitize(document.getElementById('m-nome').value.trim());
   const whats=document.getElementById('m-whats').value.trim();
-  const neg=document.getElementById('m-neg').value.trim();
-  const svc=document.getElementById('m-svc').value;
-  const obs=document.getElementById('m-obs').value.trim();
+  const neg=_sanitize(document.getElementById('m-neg').value.trim());
+  const svc=_sanitize(document.getElementById('m-svc').value);
+  const obs=_sanitize(document.getElementById('m-obs').value.trim());
+
   clearModalErrors();
   let hasError=false;
-  if(!nome){document.getElementById('m-nome').classList.add('invalid');document.getElementById('err-nome').style.display='block';hasError=true;}
-  if(!whats){document.getElementById('m-whats').classList.add('invalid');document.getElementById('err-whats').style.display='block';hasError=true;}
+
+  if(!nome||!_validName(nome)){
+    document.getElementById('m-nome').classList.add('invalid');
+    const errNome=document.getElementById('err-nome');
+    errNome.textContent=!nome?'Por favor, informe seu nome.':'Nome inválido (mínimo 2 caracteres).';
+    errNome.style.display='block';
+    hasError=true;
+  }
+  if(!whats||!_validPhone(whats)){
+    document.getElementById('m-whats').classList.add('invalid');
+    const errWhats=document.getElementById('err-whats');
+    errWhats.textContent=!whats?'Por favor, informe seu WhatsApp.':'Formato inválido. Ex: (24) 99999-9999';
+    errWhats.style.display='block';
+    hasError=true;
+  }
   if(hasError)return;
+
+  // Rate limiting
+  const now=Date.now();
+  if(_submitLog.count>=3){
+    const errWhats=document.getElementById('err-whats');
+    errWhats.textContent='Muitas tentativas. Tente novamente em alguns minutos.';
+    errWhats.style.display='block';
+    return;
+  }
+  if(_submitLog.lastAt!==0&&now-_submitLog.lastAt<30000){
+    const errWhats=document.getElementById('err-whats');
+    errWhats.textContent='Aguarde alguns segundos antes de tentar novamente.';
+    errWhats.style.display='block';
+    return;
+  }
+  _submitLog.count++;
+  _submitLog.lastAt=now;
+
   const btn=document.querySelector('.modal-submit');
   btn.disabled=true;
   btn.textContent='Enviando...';
+
   fetch('https://formspree.io/f/maqknbvl',{
     method:'POST',
     headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify({nome,whatsapp:whats,negocio:neg,servico:svc,observacoes:obs||'Não informado'})
+    body:JSON.stringify({nome,whatsapp:whats,negocio:neg||'Não informado',servico:svc||'Não informado',observacoes:obs||'Não informado'})
   })
   .then(r=>{if(!r.ok)throw new Error();return r.json()})
   .then(()=>{
