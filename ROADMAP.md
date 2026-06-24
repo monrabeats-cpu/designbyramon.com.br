@@ -7,9 +7,10 @@
 
 ## Status Atual
 
-**Branch de desenvolvimento:** `claude/great-brown-v8d7au`  
+**Branch de desenvolvimento:** `claude/great-brown-v8d7au` → mergeado em `main`  
 **Stack:** Next.js 16 · React 19 · TypeScript · CSS global (sem Tailwind) · Vercel  
-**Build:** ✅ 11 páginas estáticas, 0 erros
+**Build:** ✅ 11 páginas estáticas, 0 erros  
+**Última atualização:** 2026-06-24
 
 ---
 
@@ -46,10 +47,17 @@
 - [x] `/cases/toof-challenge-day` — narrativa completa + galeria
 - [x] `/cases/green-coast-tour` — narrativa completa + galeria
 
-### Páginas auxiliares
+### Páginas
 - [x] `/contato` — WhatsApp + Instagram
-- [x] `/sobre` — placeholder
-- [x] `/identidade-visual` — placeholder
+- [x] `/sobre` — trajetória, filosofia, diferenciais (foto placeholder até sessão editorial)
+- [x] `/identidade-visual` — landing page de conversão completa (R$5.000)
+
+### SEO
+- [x] `robots.txt`
+- [x] `sitemap.xml` — 9 URLs com prioridades
+- [x] Open Graph + Twitter Card com `hero-ramon.jpg`
+- [x] JSON-LD schema: Person + LocalBusiness com OfferCatalog
+- [x] Meta descriptions e title template por página
 
 ---
 
@@ -57,68 +65,45 @@
 
 ### Alta prioridade
 
-#### 1. Depoimentos — placeholder já estruturado
-- [ ] Coletar 2–3 depoimentos reais de clientes
+#### 1. Depoimentos — próxima entrega de conteúdo
+- [ ] Ramon coleta 2–3 depoimentos (estratégia: pedir mensagem de WhatsApp → transformar em citação com autorização)
 - [ ] Adicionar seção entre Portfólio e Calculadora na homepage
-- [ ] Estrutura sugerida: nome + tipo de negócio + citação + foto (opcional)
+- [ ] Estrutura: nome + tipo de negócio + citação + foto (opcional)
 - **Quem:** Ramon coleta, Claude implementa
+- **Candidatos:** Dra. Thais Favilla, G10 Academia, TOOF, Green Coast Tour
 
-#### 2. Página `/sobre` — história real
-- [ ] Foto editorial de Ramon (quando disponível)
-- [ ] Texto sobre trajetória: chegou no marketing por acaso, vê potencial em toda marca
-- [ ] Filosofia: acompanha o cliente em toda a jornada, valida cada fase
-- [ ] Diferencial: não entrega só arquivos — entrega marca que escala
-- **Quem:** Ramon fornece conteúdo, Claude implementa
-
-#### 3. Página `/identidade-visual` — landing page de conversão
-- [ ] Página dedicada ao pacote principal (R$5.000)
-- [ ] O que inclui: estratégia de marca + sistema visual + brand book
-- [ ] Processo em etapas (baseado no método já explicado no site)
-- [ ] Investimento transparente
-- [ ] CTA direto para WhatsApp ou modal
-- **Objetivo:** substituir proposta PDF para leads que chegam pelo WhatsApp
-
-#### 4. SEO mínimo
-- [ ] `robots.txt`
-- [ ] `sitemap.xml` gerado estaticamente
-- [ ] Open Graph image (1200×630px) — foto de Ramon ou mockup de marca
-- [ ] JSON-LD schema (Person + LocalBusiness)
-- [ ] Meta description revisada por página
+#### 2. Foto editorial
+- [ ] Foto de Ramon em ambiente profissional/autoral
+- [ ] Substituir `/img/hero-ramon.jpg` no hero e no `/sobre`
+- [ ] Gerar nova imagem Open Graph 1200×630px
+- **Quem:** Ramon providencia sessão fotográfica
 
 ---
 
 ### Média prioridade
 
-#### 5. Analytics
+#### 3. Analytics
 - [ ] Google Analytics 4 ou Plausible (privacy-first)
 - [ ] Evento de conversão: modal aberto, formulário enviado, clique no WhatsApp
 
-#### 6. Página `/proposta` — funil de proposta digital
-- [ ] Página privada (ou pública) que substitui o PDF
+#### 4. Página `/proposta` — funil de proposta digital
+- [ ] Página que substitui o PDF enviado pelo WhatsApp
 - [ ] Escopo, investimento, processo, prazo, próximo passo
 - [ ] Versão por serviço (ID Visual, Branding, Site)
-- [ ] Link que Ramon envia pelo WhatsApp para leads
-
-#### 7. Foto editorial
-- [ ] Foto de Ramon em ambiente profissional/autoral
-- [ ] Usar no hero (já tem slot reservado com `/img/hero-ramon.jpg`)
-- [ ] Usar na página `/sobre`
-- **Quem:** Ramon providencia sessão fotográfica
 
 ---
 
 ### Baixa prioridade / futuro
 
-#### 8. Blog / Conteúdo
+#### 5. Blog / Conteúdo
 - [ ] Artigos curtos sobre posicionamento, identidade visual, casos do mercado
 - [ ] Melhora SEO de cauda longa
-- [ ] Posiciona Ramon como referência, não só executor
 
-#### 9. Novos cases
+#### 6. Novos cases
 - [ ] Adicionar cases futuros à medida que projetos são concluídos
 - [ ] Estrutura já pronta em `/cases/[slug]`
 
-#### 10. Versão `/proposta` por cliente
+#### 7. Versão `/proposta` por cliente
 - [ ] Proposta personalizada acessível via link único
 - [ ] Requer backend simples (Supabase ou similar)
 
@@ -142,11 +127,11 @@
 ```
 src/
   app/
-    layout.tsx          # RootLayout com metadata, lang="pt-BR", Google Fonts
+    layout.tsx          # RootLayout — metadata, Open Graph, JSON-LD, Google Fonts
     page.tsx            # Wrapper → <HomePage />
     globals.css         # Todo o CSS (variáveis, componentes, responsive)
-    sobre/page.tsx
-    identidade-visual/page.tsx
+    sobre/page.tsx      # Trajetória, filosofia, diferenciais
+    identidade-visual/page.tsx  # Landing page de conversão R$5.000
     contato/page.tsx
     cases/
       page.tsx          # Hub com grid dos 4 cases
@@ -157,13 +142,13 @@ src/
 
 public/
   img/                  # 53 imagens (portfolio, cases, hero)
+  robots.txt
+  sitemap.xml
 ```
 
 ---
 
 ## Conteúdo pendente de Ramon
 
-- [ ] Depoimentos de clientes (nome, negócio, citação)
-- [ ] Texto sobre sua trajetória para `/sobre`
+- [ ] Depoimentos de clientes (nome, negócio, citação via WhatsApp)
 - [ ] Foto editorial para hero e `/sobre`
-- [ ] Confirmação dos preços na calculadora (corretos conforme conversa: ID Visual R$3.5–5k, Branding R$8–12.5k)
